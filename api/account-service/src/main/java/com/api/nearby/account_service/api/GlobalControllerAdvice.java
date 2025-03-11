@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -64,6 +65,21 @@ public class GlobalControllerAdvice {
                 )
                 .findFirst()
                 .orElse("Invalid request");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorInformation
+                        .builder()
+                        .httpStatus(HttpStatus.BAD_REQUEST)
+                        .dateTime(Utils.formatDateToResponse(OffsetDateTime.now()))
+                        .errorTypeEnum(ErrorTypeEnum.INVALID_REQUEST)
+                        .message(message)
+                        .build()
+                );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorInformation> handleMethodArgumentNotValidException(HttpMessageNotReadableException exception) {
+        var message = exception.getMessage();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorInformation
