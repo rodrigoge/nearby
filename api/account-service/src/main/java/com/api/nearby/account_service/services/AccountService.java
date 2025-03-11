@@ -21,7 +21,9 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Transactional
+    @Autowired
+    private AccountMapper accountMapper;
+
     public AccountResponse create(AccountRequest accountRequest) {
         log.info("----- [Starting create account flow] -----");
         var accountEmail = accountRepository.findByEmail(accountRequest.email());
@@ -30,12 +32,14 @@ public class AccountService {
                     HttpStatus.BAD_REQUEST,
                     OffsetDateTime.now(),
                     ErrorTypeEnum.INVALID_REQUEST,
-                    "E-mail " + accountEmail + " already exists"
+                    "E-mail " + accountEmail.get().getEmail() + " already exists"
             );
         }
-        var account = AccountMapper.buildToAccount(accountRequest);
+        var account = accountMapper.buildToAccount(accountRequest);
+        account.setCreatedAt(OffsetDateTime.now());
+        account.setUpdatedAt(OffsetDateTime.now());
         var accountSaved = accountRepository.save(account);
-        var accountResponse = AccountMapper.buildToAccountResponse(accountSaved);
+        var accountResponse = accountMapper.buildToAccountResponse(accountSaved);
         log.info("----- [Finishing create account flow] -----");
         return accountResponse;
     }

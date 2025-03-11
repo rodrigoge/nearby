@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-import java.time.OffsetDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
 public class ErrorInformation {
 
     private HttpStatus httpStatus;
-    private OffsetDateTime dateTime;
+    private String dateTime;
     private ErrorTypeEnum errorTypeEnum;
     private String message;
 }
