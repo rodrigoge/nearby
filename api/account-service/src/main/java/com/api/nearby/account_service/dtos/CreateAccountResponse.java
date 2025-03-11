@@ -2,10 +2,9 @@ package com.api.nearby.account_service.dtos;
 
 import com.api.nearby.account_service.db.ProfileTypeEnum;
 
-public record AccountResponse(
+public record CreateAccountResponse(
         String name,
         String email,
-        byte[] avatar,
         ProfileTypeEnum profileType,
         String createdAt,
         String updatedAt

@@ -1,14 +1,12 @@
 package com.api.nearby.account_service.mappers;
 
 import com.api.nearby.account_service.db.Account;
-import com.api.nearby.account_service.dtos.AccountRequest;
-import com.api.nearby.account_service.dtos.AccountResponse;
+import com.api.nearby.account_service.dtos.CreateAccountRequest;
+import com.api.nearby.account_service.dtos.CreateAccountResponse;
 import com.api.nearby.account_service.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.time.OffsetDateTime;
 
 @Component
 public class AccountMapper {
@@ -16,22 +14,20 @@ public class AccountMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Account buildToAccount(AccountRequest accountRequest) {
+    public Account buildToAccount(CreateAccountRequest createAccountRequest) {
         return Account
                 .builder()
-                .name(accountRequest.name())
-                .email(accountRequest.email())
-                .password(passwordEncoder.encode(accountRequest.password()))
-                .avatar(accountRequest.avatar())
-                .profileType(accountRequest.profileType())
+                .name(createAccountRequest.name())
+                .email(createAccountRequest.email())
+                .password(passwordEncoder.encode(createAccountRequest.password()))
+                .profileType(createAccountRequest.profileType())
                 .build();
     }
 
-    public AccountResponse buildToAccountResponse(Account account) {
-        return new AccountResponse(
+    public CreateAccountResponse buildToAccountResponse(Account account) {
+        return new CreateAccountResponse(
                 account.getName(),
                 account.getEmail(),
-                account.getAvatar(),
                 account.getProfileType(),
                 Utils.formatDateToResponse(account.getCreatedAt()),
                 Utils.formatDateToResponse(account.getUpdatedAt())

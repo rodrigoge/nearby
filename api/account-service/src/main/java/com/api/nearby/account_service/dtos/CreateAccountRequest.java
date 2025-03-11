@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record AccountRequest(
+public record CreateAccountRequest(
         @NotBlank(message = "Name is required")
         String name,
 
@@ -21,8 +21,6 @@ public record AccountRequest(
                 message = "Invalid e-mail"
         )
         String email,
-
-        byte[] avatar,
 
         @NotNull(message = "Profile type is required")
         ProfileTypeEnum profileType) {

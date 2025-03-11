@@ -1,7 +1,7 @@
 package com.api.nearby.account_service.api;
 
-import com.api.nearby.account_service.dtos.AccountRequest;
-import com.api.nearby.account_service.dtos.AccountResponse;
+import com.api.nearby.account_service.dtos.CreateAccountRequest;
+import com.api.nearby.account_service.dtos.CreateAccountResponse;
 import com.api.nearby.account_service.services.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<AccountResponse> create(@Valid @RequestBody AccountRequest accountRequest) {
-        var accountResponse = accountService.create(accountRequest);
+    public ResponseEntity<CreateAccountResponse> create(@Valid @RequestBody CreateAccountRequest createAccountRequest) {
+        var accountResponse = accountService.create(createAccountRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(accountResponse);
     }
 }
